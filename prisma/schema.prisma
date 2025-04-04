@@ -1,0 +1,267 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma" // Recommended for NeonDB
+}
+
+// Model for anonymous users submitting feedback
+model AnonymousUser {
+  id             String        @id @default(uuid()) // Anonymous User ID
+  email          String?       @unique // Optional, for email notifications
+  region         String?       // Determined on first submission, potentially updated
+  createdAt      DateTime      @default(now())
+  submissions    Submission[]
+  messageViews   UserMessageView[]
+
+  @@index([email]) // Index for efficient lookup for email sending
+  @@index([region]) // Index for filtering by region
+}
+
+model Submission {
+  id              String        @id @default(cuid())
+  anonymousUserId String
+  anonymousUser   AnonymousUser @relation(fields: [anonymousUserId], references: [id])
+  region          String        // Region at time of submission
+  timestamp       DateTime      @default(now())
+  // focusGroup      String        // Replaced by relation
+  focusGroupId    String        // Foreign key for FocusGroup
+  focusGroup      FocusGroup    @relation(fields: [focusGroupId], references: [id])
+  // Specific fields for multi-step check-in
+  overallMood     Int?          // e.g., 1 (Awful) to 5 (Great)
+  positiveAspects String[]      // List of selected positive tags/keywords
+  negativeAspects String[]      // List of selected negative tags/keywords
+  hoursWorked     Int?          // Hours worked slider value
+  comment         String?       // Optional text comment
+  didNotWork      Boolean       @default(false) // Checkbox for "I didn't work"
+  createdAt       DateTime      @default(now())
+
+  @@index([anonymousUserId]) // Changed from userId
+  @@index([region, timestamp])
+}
+
+// Authenticated User model (for Managers, Admins) - Standard NextAuth model
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String?         @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?         // Added for Credentials provider
+  role          UserRole        @default(USER) // Added for authorization (MANAGER, ADMIN)
+  accounts      Account[]
+  sessions      Session[]
+  manager       Manager?        // Link to Manager profile
+  admin         Admin?          // Link to Admin profile
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+// Standard NextAuth model
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+// Standard NextAuth model
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// Standard NextAuth model
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum UserRole {
+  USER    // Default role, might not be used if only Managers/Admins log in
+  MANAGER
+  ADMIN
+}
+
+// Manager specific profile data, linked to the main User model
+model Manager {
+  id             String      @id @default(cuid())
+  userId         String      @unique // Link to the User model
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Add any manager-specific fields here if needed in the future
+  focusGroupId String?     @unique // Manager assigned to one group (optional, unique ensures one manager per group)
+  focusGroup   FocusGroup? @relation(fields: [focusGroupId], references: [id])
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  actionLogs     ActionLog[] @relation("ManagerActionLogs")
+
+  @@index([userId])
+}
+
+// Admin specific profile data, linked to the main User model
+model Admin {
+  id             String      @id @default(cuid())
+  userId         String      @unique // Link to the User model
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Add any admin-specific fields here if needed in the future
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  actionLogs     ActionLog[] @relation("AdminActionLogs")
+
+  @@index([userId])
+}
+
+model RegionalEvent {
+  id          String    @id @default(cuid())
+  region      String
+  eventDate   DateTime
+  headline    String
+  summary     String?
+  source      String?
+  fetchedAt   DateTime  @default(now())
+
+  @@unique([region, headline, eventDate]) // Prevent duplicates
+  @@index([region, eventDate])
+}
+
+model NegativeTrend {
+  id          String    @id @default(cuid())
+  region      String
+  trendType   String    // e.g., "High Workload Concern", "Low Collaboration Score"
+  startDate   DateTime
+  lastDetected DateTime
+  severity    Int?      // Optional severity score
+  details     Json?     // Additional context
+  resolved    Boolean   @default(false)
+
+  @@index([region, resolved, lastDetected])
+}
+
+model RegionalMessage {
+  id          String    @id @default(cuid())
+  region      String
+  message     String
+  createdAt   DateTime  @default(now())
+  createdBy   String?   // Manager ID or name
+  periodStart DateTime? // Optional: Week/period this message relates to
+  periodEnd   DateTime?
+  views       UserMessageView[]
+
+  @@index([region, createdAt])
+}
+
+model UserMessageView {
+  id              String        @id @default(cuid())
+  anonymousUserId String
+  anonymousUser   AnonymousUser @relation(fields: [anonymousUserId], references: [id])
+  messageId       String
+  message         RegionalMessage @relation(fields: [messageId], references: [id])
+  viewedAt    DateTime  @default(now())
+
+  @@unique([anonymousUserId, messageId]) // Anonymous user sees each message once
+  @@index([anonymousUserId]) // Index for user-specific view lookups
+  @@index([messageId])
+}
+
+model ActionLog {
+  id          String    @id @default(cuid())
+  timestamp   DateTime  @default(now())
+  actionType  String    // e.g., "SUBMISSION", "MESSAGE_SENT", "EMAIL_SENT_BATCH", "DATA_UPLOAD", "TREND_DETECTED"
+  details     Json?     // Contextual details
+  anonymousUserId String?   // Anonymous user ID if applicable
+  managerId   String?     // Manager profile ID
+  manager     Manager?    @relation("ManagerActionLogs", fields: [managerId], references: [id])
+  adminId     String?     // Admin profile ID
+  admin       Admin?      @relation("AdminActionLogs", fields: [adminId], references: [id])
+  // We could also add an optional relation to the authenticated User if needed
+  // authenticatedUserId String?
+  // authenticatedUser User? @relation(fields: [authenticatedUserId], references: [id])
+
+  @@index([timestamp])
+  @@index([actionType])
+  @@index([anonymousUserId])
+  @@index([managerId])
+  @@index([adminId])
+}
+
+// Model for Focus Groups
+model FocusGroup {
+  id          String       @id @default(cuid())
+  name        String       @unique // Name of the focus group (e.g., "Operations", "Sales")
+  description String?      // Optional description
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  submissions Submission[] // Submissions linked to this group
+  manager     Manager?     // Manager assigned to this group
+}
+
+// Model for Manager Invitations
+model ManagerInvitation {
+  id        String   @id @default(cuid())
+  email     String   @unique // Email invited
+  token     String   @unique // Secure, unique token for the invite link
+  expires   DateTime // Expiry date for the token
+  createdAt DateTime @default(now())
+  // Optional: Link to the User/Manager once they sign up?
+}
+
+// --- Temporarily Commented Out for Debugging ---
+// // Model for Positive Aspects (Tags/Keywords)
+// model PositiveAspect {
+//   id          String       @id @default(cuid())
+//   name        String       @unique // The aspect text (e.g., "Good Collaboration", "Achieved Goals")
+//   submissions Submission[] // Submissions where this aspect was mentioned
+//   createdAt   DateTime     @default(now())
+
+//   @@map("positive_aspects") // Optional: specify table name
+// }
+
+// // Model for Negative Aspects (Tags/Keywords)
+// model NegativeAspect {
+//   id          String       @id @default(cuid())
+//   name        String       @unique // The aspect text (e.g., "High Workload", "Meeting Fatigue")
+//   submissions Submission[] // Submissions where this aspect was mentioned
+//   createdAt   DateTime     @default(now())
+
+//   @@map("negative_aspects") // Optional: specify table name
+// }
+
+// Model for Check-in Email Verification Tokens
+model VerificationRequest {
+  id        String   @id @default(cuid())
+  email     String   @unique // Email address verification is requested for (Make unique for upsert)
+  tokenHash String   // Hashed verification token
+  expires   DateTime // Expiry time for the token
+  createdAt DateTime @default(now())
+  verifiedAt DateTime? // Timestamp when the token was successfully verified
+
+//   @@unique([email, tokenHash]) // Should be unique but might have retries
+//   @@index([email])
+  // @@index([expires]) // Removed invalid index on DateTime field
+}
+// --- End Temporarily Commented Out ---
