@@ -21,14 +21,7 @@ const nextConfig = {
   // Disable powered by header
   poweredByHeader: false,
   // Disable compression for better compatibility
-  compress: false,
-  // Experimental features
-  experimental: {
-    // Keep optimized loading for better performance
-    // disableOptimizedLoading: false,
-    // Enable CSS optimization
-    optimizeCss: true
-  }
+  compress: false
 };
 
 export default nextConfig;
