@@ -6,8 +6,8 @@ const nextConfig = {
     domains: ['vercel.com'],
     unoptimized: true,
   },
-  // Run in serverless mode (better compatibility with Vercel)
-  output: 'serverless',
+  // Use standalone mode for API support
+  output: 'standalone',
   // Trailing slashes handled by Vercel config
   trailingSlash: true,
   // Skip type checking during build
@@ -18,9 +18,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Other performance options
-  swcMinify: true,
-  // Serve from static HTML for public files
+  // Disable powered by header
   poweredByHeader: false,
   // Disable compression for better compatibility
   compress: false,
