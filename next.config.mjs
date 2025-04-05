@@ -9,8 +9,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Remove standalone output to fix file copying issues
-  // output: 'standalone',
+  // Enable for better Vercel compatibility
+  output: 'standalone',
+  // Add trailing slash for better compatibility
+  trailingSlash: true,
 };
 
 export default nextConfig;
