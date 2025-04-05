@@ -19,7 +19,8 @@ const eslintConfig = [
       "react/no-unescaped-entities": "off", // Turned off for build
       "@typescript-eslint/ban-ts-comment": "off", // Turned off for build
       "prefer-const": "off", // Turned off for build
-      "@typescript-eslint/no-empty-object-type": "off" // Added for input.tsx issue
+      "@typescript-eslint/no-empty-object-type": "off", // Added for input.tsx issue
+      "@next/next/no-html-link-for-pages": "off" // Allow HTML links for static export
     }
   }
 ];
