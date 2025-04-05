@@ -2,14 +2,15 @@
 const nextConfig = {
   /* config options here */
   reactStrictMode: true,
-  // Disable static optimization and force server-side rendering
+  // Config for production builds
   compiler: {
     styledComponents: true,
   },
   images: {
     unoptimized: true,
   },
-  output: 'standalone',
+  // Remove standalone output to fix file copying issues
+  // output: 'standalone',
 };
 
 export default nextConfig;

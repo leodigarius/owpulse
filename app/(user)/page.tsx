@@ -1,6 +1,6 @@
 'use client';
 
-// Force dynamic rendering to avoid prerender errors
+// Simple dynamic export that works with Next.js on Vercel
 export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect } from 'react';
