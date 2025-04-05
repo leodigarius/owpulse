@@ -1,17 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
-  reactStrictMode: true,
-  // Config for production builds
-  compiler: {
-    styledComponents: true,
-  },
+  output: 'export',  // Change to export mode which is more compatible
+  distDir: 'dist',   // Explicitly set the output directory
   images: {
     unoptimized: true,
   },
-  // Enable for better Vercel compatibility
-  output: 'standalone',
-  // Add trailing slash for better compatibility
+  // Ensure trailing slashes for better routing
   trailingSlash: true,
 };
 
