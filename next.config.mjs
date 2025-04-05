@@ -6,8 +6,8 @@ const nextConfig = {
     domains: ['vercel.com'],
     unoptimized: true,
   },
-  // Use standalone mode which works better with API routes
-  output: 'standalone',
+  // Use export mode for static deployment
+  output: 'export',
   // Use trailing slashes for consistent URLs
   trailingSlash: true,
   // Skip type checking during build
@@ -18,12 +18,14 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // Disable compress for static site generation
+  compress: false,
+  // Generate static pages
+  distDir: 'out',
   // Ensure error pages are correctly generated
   generateEtags: false,
   // Serve from static HTML for public files
   poweredByHeader: false,
-  // Disable compression for better compatibility
-  compress: false,
   // Serve the fallback HTML for SPA-like behavior
   async rewrites() {
     return [

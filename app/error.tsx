@@ -26,6 +26,26 @@ export default function Error({
       <p className="text-lg mb-8 text-center">
         We apologize for the inconvenience. Please try again or return to the homepage.
       </p>
+      
+      {/* Show error details in development */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="mb-8 p-4 bg-red-900 rounded-lg text-left w-full max-w-2xl overflow-auto">
+          <h2 className="text-xl font-bold mb-2">Error Details:</h2>
+          <p className="font-mono text-sm">{error.message}</p>
+          {error.stack && (
+            <>
+              <h3 className="text-lg font-bold mt-4 mb-2">Stack Trace:</h3>
+              <pre className="font-mono text-xs whitespace-pre-wrap">
+                {error.stack}
+              </pre>
+            </>
+          )}
+          {error.digest && (
+            <p className="mt-2 font-mono text-sm">Error Digest: {error.digest}</p>
+          )}
+        </div>
+      )}
+      
       <div className="flex space-x-4">
         <button
           onClick={reset}

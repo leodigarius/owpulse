@@ -1,7 +1,7 @@
 import { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import prisma from './prisma'; // Use the singleton instance
+import { prisma } from './prisma'; // Use the named export
 import bcrypt from 'bcrypt';
 
 // Define UserRole enum manually based on your Prisma schema

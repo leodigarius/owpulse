@@ -97,7 +97,7 @@ export async function sendVerificationEmail(email: string, token: string): Promi
 // Function for sending regional messages to employees
 export async function sendRegionalMessageEmails(messageId: string, region: string): Promise<{successCount: number, errorCount: number}> {
     // Get message from database
-    const prisma = await import('./prisma').then(mod => mod.default);
+    const prisma = await import('./prisma').then(mod => mod.prisma);
     
     try {
         // Get the message content

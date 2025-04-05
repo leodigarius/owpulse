@@ -1,6 +1,6 @@
 // owpulse/app/api/submit/route.ts
 import { NextResponse, NextRequest } from 'next/server';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client'; // Import Prisma namespace for types directly
 import geoip from 'geoip-lite';
 import { headers } from 'next/headers'; // Import headers
