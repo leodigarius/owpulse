@@ -6,9 +6,9 @@ const nextConfig = {
     domains: ['vercel.com'],
     unoptimized: true,
   },
-  // Use standalone mode to support API routes
-  output: 'standalone',
-  // Use trailing slashes for consistent URLs
+  // Run in serverless mode (better compatibility with Vercel)
+  output: 'serverless',
+  // Trailing slashes handled by Vercel config
   trailingSlash: true,
   // Skip type checking during build
   typescript: {
@@ -18,8 +18,8 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Ensure error pages are correctly generated
-  generateEtags: false,
+  // Other performance options
+  swcMinify: true,
   // Serve from static HTML for public files
   poweredByHeader: false,
   // Disable compression for better compatibility

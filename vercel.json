@@ -1,0 +1,55 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "functions": {
+    "app/api/**/*.ts": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    { 
+      "src": "/checkin",
+      "dest": "/checkin/" 
+    },
+    { 
+      "src": "/checkin/",
+      "dest": "/checkin/" 
+    },
+    { 
+      "src": "/admin",
+      "dest": "/admin/" 
+    },
+    { 
+      "src": "/admin/",
+      "dest": "/admin/" 
+    },
+    { 
+      "src": "/manager",
+      "dest": "/manager/" 
+    },
+    { 
+      "src": "/manager/",
+      "dest": "/manager/" 
+    },
+    { 
+      "src": "/dashboard",
+      "dest": "/dashboard/" 
+    },
+    { 
+      "src": "/dashboard/",
+      "dest": "/dashboard/" 
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+} 
