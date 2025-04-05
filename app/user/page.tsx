@@ -9,6 +9,7 @@ import Step2_Positives from '@/components/checkin/Step2_Positives';
 import Step3_Negatives from '@/components/checkin/Step3_Negatives';
 import Step4_Hours from '@/components/checkin/Step4_Hours';
 import Step5_ThankYou from '@/components/checkin/Step5_ThankYou';
+import EmailVerificationForm from '@/components/checkin/EmailVerificationForm';
 import Link from 'next/link';
 import { ThemeToggleButton } from '@/components/ThemeToggleButton';
 
@@ -42,6 +43,7 @@ export default function UserCheckinFlowPage() {
   const [message, setMessage] = useState('');
   const [anonymousUserId, setAnonymousUserId] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
 
   // Load/Generate Anonymous User ID on mount
   useEffect(() => {
@@ -49,12 +51,15 @@ export default function UserCheckinFlowPage() {
     const storedUserId = localStorage.getItem('owpulseAnonymousUserId');
     if (storedUserId) {
       setAnonymousUserId(storedUserId);
-    } else {
-      const newUserId = crypto.randomUUID();
-      localStorage.setItem('owpulseAnonymousUserId', newUserId);
-      setAnonymousUserId(newUserId);
+      setIsVerified(true); // If we have a stored user ID, consider them verified
     }
   }, []);
+
+  const handleVerificationSuccess = (userId: string) => {
+    setAnonymousUserId(userId);
+    localStorage.setItem('owpulseAnonymousUserId', userId);
+    setIsVerified(true);
+  };
 
   const handleNext = () => {
     if (currentStep === 4) {
@@ -158,46 +163,55 @@ export default function UserCheckinFlowPage() {
 
       {/* Main Content */}
       <main className="relative flex min-h-screen flex-col items-center justify-center p-6 md:p-12 lg:p-24">
-        {/* Progress Bar */}
-        <div className="w-full max-w-2xl mb-6">
-          <div className="w-full bg-gray-200/30 dark:bg-gray-700/30 h-2 rounded-full overflow-hidden backdrop-blur-sm">
-            <div 
-              className="h-full bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 transition-all duration-500 ease-in-out"
-              style={{ width: `${(currentStep / 5) * 100}%` }}
-            ></div>
+        {/* Email Verification or Check-in Flow */}
+        {!isVerified ? (
+          <div className="w-full max-w-2xl">
+            <EmailVerificationForm onSuccess={handleVerificationSuccess} />
           </div>
-          <div className="flex justify-between mt-2 text-xs text-white/70">
-            <span>Mood</span>
-            <span>Positives</span>
-            <span>Challenges</span>
-            <span>Hours</span>
-            <span>Complete</span>
-          </div>
-        </div>
-
-        {/* Glass Card Container */}
-        <div className="w-full max-w-2xl mx-auto bg-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20 transform transition-all duration-300">
-          <h1 className="text-3xl font-bold text-center text-white mb-6">OW Pulse Check-in</h1>
-
-          {/* Render the current step */}
-          <div className="transition-all duration-500 ease-in-out text-white">
-            {renderStep()}
-          </div>
-
-          {/* Loading and Message Display */}
-          {isLoading && (
-            <div className="flex justify-center items-center mt-6">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-              <p className="ml-3 text-white">Processing...</p>
+        ) : (
+          <>
+            {/* Progress Bar - Only show when verified */}
+            <div className="w-full max-w-2xl mb-6">
+              <div className="w-full bg-gray-200/30 dark:bg-gray-700/30 h-2 rounded-full overflow-hidden backdrop-blur-sm">
+                <div 
+                  className="h-full bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 transition-all duration-500 ease-in-out"
+                  style={{ width: `${(currentStep / 5) * 100}%` }}
+                ></div>
+              </div>
+              <div className="flex justify-between mt-2 text-xs text-white/70">
+                <span>Mood</span>
+                <span>Positives</span>
+                <span>Challenges</span>
+                <span>Hours</span>
+                <span>Complete</span>
+              </div>
             </div>
-          )}
-          
-          {message && !isLoading && (
-            <div className={`p-4 rounded-lg mt-6 ${message.startsWith('Error:') ? 'bg-red-400/20 text-red-100' : 'bg-green-400/20 text-green-100'}`}>
-              <p className="text-center font-medium">{message}</p>
+
+            {/* Glass Card Container */}
+            <div className="w-full max-w-2xl mx-auto bg-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20 transform transition-all duration-300">
+              <h1 className="text-3xl font-bold text-center text-white mb-6">OW Pulse Check-in</h1>
+
+              {/* Render the current step */}
+              <div className="transition-all duration-500 ease-in-out text-white">
+                {renderStep()}
+              </div>
+
+              {/* Loading and Message Display */}
+              {isLoading && (
+                <div className="flex justify-center items-center mt-6">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                  <p className="ml-3 text-white">Processing...</p>
+                </div>
+              )}
+              
+              {message && !isLoading && (
+                <div className={`p-4 rounded-lg mt-6 ${message.startsWith('Error:') ? 'bg-red-400/20 text-red-100' : 'bg-green-400/20 text-green-100'}`}>
+                  <p className="text-center font-medium">{message}</p>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
       </main>
 
       {/* Client-side generated stars (rendered only after mount to avoid hydration issues) */}
