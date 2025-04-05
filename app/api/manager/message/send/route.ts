@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/auth'; // Updated import path
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { sendRegionalMessageEmails } from '@/lib/email'; // Import the email function
 // import { UserRole } from '@prisma/client'; // Removed problematic import
 

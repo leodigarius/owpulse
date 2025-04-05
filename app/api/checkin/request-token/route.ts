@@ -1,6 +1,6 @@
 // owpulse/app/api/checkin/request-token/route.ts
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma'; // Use default import
+import { prisma } from '@/lib/prisma';
 // import { PrismaClient } from '@prisma/client'; // Type should be inferred now
 // const prisma = prismaClient as PrismaClient; // Remove casting
 import bcrypt from 'bcrypt';
