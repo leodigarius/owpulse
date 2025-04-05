@@ -200,10 +200,6 @@ export default function UserCheckinFlowPage() {
         </div>
       </main>
 
-      <footer className="absolute bottom-0 w-full text-center p-4 text-white/70 text-sm">
-        <p>&copy; {new Date().getFullYear()} Oliver Wyman. All rights reserved.</p>
-      </footer>
-
       {/* Client-side generated stars (rendered only after mount to avoid hydration issues) */}
       {mounted && (
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
