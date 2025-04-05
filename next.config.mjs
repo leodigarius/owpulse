@@ -22,6 +22,13 @@ const nextConfig = {
   poweredByHeader: false,
   // Disable compression for better compatibility
   compress: false,
+  // Experimental features
+  experimental: {
+    // Disable client references manifest
+    disableOptimizedLoading: true,
+    // Enable more component exports for static generation
+    optimizeCss: true
+  }
 };
 
 export default nextConfig;

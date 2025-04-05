@@ -4,43 +4,11 @@
   "installCommand": "npm install",
   "framework": "nextjs",
   "regions": ["iad1"],
-  "functions": {
-    "app/api/**/*.ts": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
-  },
   "routes": [
-    { 
-      "src": "/checkin/?",
-      "dest": "/checkin/index.html" 
-    },
-    { 
-      "src": "/admin/?",
-      "dest": "/admin/index.html" 
-    },
-    { 
-      "src": "/manager/?",
-      "dest": "/manager/index.html" 
-    },
-    { 
-      "src": "/dashboard/?",
-      "dest": "/dashboard/index.html" 
-    },
-    {
-      "src": "^/((?!_next|static|api|.*\\.(?:jpg|jpeg|gif|png|svg|ico)).*)",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ],
-  "rewrites": [
-    { "source": "/checkin", "destination": "/checkin/index.html" },
-    { "source": "/admin", "destination": "/admin/index.html" },
-    { "source": "/manager", "destination": "/manager/index.html" },
-    { "source": "/dashboard", "destination": "/dashboard/index.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "src": "^/checkin/?$", "dest": "/checkin/index.html" },
+    { "src": "^/admin/?$", "dest": "/admin/index.html" },
+    { "src": "^/manager/?$", "dest": "/manager/index.html" },
+    { "src": "^/dashboard/?$", "dest": "/dashboard/index.html" },
+    { "src": "^/(?!_next|static).*$", "dest": "/index.html" }
   ]
 } 
