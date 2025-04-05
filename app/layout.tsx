@@ -1,5 +1,6 @@
 import './globals.css';
 import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import SessionProviderWrapper from '@/components/providers/SessionProviderWrapper';
 
 export const metadata = {
   title: 'OWPulse',
@@ -20,7 +21,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <SessionProviderWrapper>
+            {children}
+          </SessionProviderWrapper>
         </ThemeProvider>
       </body>
     </html>
