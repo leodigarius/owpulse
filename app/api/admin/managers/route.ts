@@ -1,8 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getServerSession } from "next-auth/next";
-// Adjust the import path based on your actual file structure for authOptions
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'; 
+import { authOptions } from '@/lib/auth'; // Updated import path
 
 // Helper to check for Admin role (copied from focus-groups route)
 async function isAdminRequest(request: NextRequest): Promise<boolean> {

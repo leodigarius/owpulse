@@ -1,5 +1,8 @@
 'use client';
 
+// Force dynamic rendering to avoid prerender errors
+export const dynamic = 'force-dynamic';
+
 import React, { useState, useEffect } from 'react';
 import Step1_Mood from '@/components/checkin/Step1_Mood';
 import Step2_Positives from '@/components/checkin/Step2_Positives';
@@ -18,6 +21,7 @@ interface CheckInData {
   comment: string;
   didNotWork: boolean;
   email: string;
+  focusGroup: string; // Added focus group
 }
 
 const initialCheckInData: CheckInData = {
@@ -28,6 +32,7 @@ const initialCheckInData: CheckInData = {
   comment: '',
   didNotWork: false,
   email: '',
+  focusGroup: '', // Initialize focus group
 };
 
 export default function UserCheckinFlowPage() {

@@ -161,7 +161,7 @@ export default function Step5_ThankYou({ data, onReset }: Step5ThankYouProps) {
       
       {/* Inspirational quote */}
       <div className="mt-8 italic text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto animate-fade-in-up opacity-0 animation-delay-700">
-        "Your feedback helps create a better work environment for everyone. Thank you for contributing!"
+        &quot;Your feedback helps create a better work environment for everyone. Thank you for contributing!&quot;
       </div>
     </div>
   );

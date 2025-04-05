@@ -154,7 +154,7 @@ export default function Step1_Mood({ data, setData, onNext }: Step1MoodProps) {
           />
           <div className="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300/40 dark:peer-focus:ring-blue-800/40 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 dark:after:border-slate-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-blue-500 dark:peer-checked:bg-blue-600"></div>
           <span className="ml-3 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors">
-            I didn't work this past week
+            I didn&apos;t work this past week
           </span>
         </label>
       </div>

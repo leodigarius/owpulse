@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
-import { getServerSession } from "next-auth/next";
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'; // Adjust path
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/auth'; // Updated import path
 import Papa from 'papaparse'; // CSV parser
 import { Readable } from 'stream'; // To handle file stream
 

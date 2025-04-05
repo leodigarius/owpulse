@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'; // Import authOptions
+import { authOptions } from '@/lib/auth'; // Updated import path
 import prisma from '@/lib/prisma';
 import { sendRegionalMessageEmails } from '@/lib/email'; // Import the email function
 // import { UserRole } from '@prisma/client'; // Removed problematic import
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     // TODO: Potentially validate region against a predefined list
 
     // 3. Database Operations (Transaction)
-    const result = await prisma.$transaction(async (tx: PrismaTransactionClient) => {
+    const result = await prisma.$transaction(async (tx) => {
       // Find the Manager profile linked to the User ID
       const managerProfile = await tx.manager.findUnique({
         where: { userId: managerUserId },

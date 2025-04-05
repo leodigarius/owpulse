@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getServerSession } from "next-auth/next";
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'; // Adjust path
+import { authOptions } from '@/lib/auth'; // Updated import path
 import crypto from 'crypto'; // For generating a secure token
 import { sendManagerInviteEmail } from '@/lib/email'; // Import email function
 // TODO: Import email sending function (e.g., from '@/lib/email')

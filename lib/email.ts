@@ -93,3 +93,71 @@ export async function sendVerificationEmail(email: string, token: string): Promi
 
     return sendEmail({ to: email, subject, html });
 }
+
+// Function for sending regional messages to employees
+export async function sendRegionalMessageEmails(messageId: string, region: string): Promise<{successCount: number, errorCount: number}> {
+    // Get message from database
+    const prisma = await import('./prisma').then(mod => mod.default);
+    
+    try {
+        // Get the message content
+        const message = await prisma.regionalMessage.findUnique({
+            where: { id: messageId },
+            select: { message: true }
+        });
+        
+        if (!message) {
+            console.error(`Message with ID ${messageId} not found`);
+            return { successCount: 0, errorCount: 0 };
+        }
+        
+        // Get all anonymous users in the region with emails
+        const users = await prisma.anonymousUser.findMany({
+            where: { 
+                region: region, 
+                email: { not: null } 
+            },
+            select: { email: true }
+        });
+        
+        if (!users || users.length === 0) {
+            console.log(`No users found in region ${region} with valid emails`);
+            return { successCount: 0, errorCount: 0 };
+        }
+        
+        console.log(`Sending message to ${users.length} users in region ${region}`);
+        
+        let successCount = 0;
+        let errorCount = 0;
+        
+        // Send email to each user
+        for (const user of users) {
+            if (!user.email) continue;
+            
+            const subject = "Message from Your Manager";
+            const html = `
+                <h1>Message from Your Manager</h1>
+                <p>Hello,</p>
+                <div style="padding: 15px; background-color: #f9f9f9; border-left: 4px solid #4f46e5; margin: 15px 0;">
+                    ${message.message}
+                </div>
+                <p>This message was sent to all team members in your region.</p>
+                <br>
+                <p>Best regards,</p>
+                <p>Your OWPulse Management Team</p>
+            `;
+            
+            const success = await sendEmail({ to: user.email, subject, html });
+            if (success) {
+                successCount++;
+            } else {
+                errorCount++;
+            }
+        }
+        
+        return { successCount, errorCount };
+    } catch (error) {
+        console.error('Error sending regional message emails:', error);
+        return { successCount: 0, errorCount: 1 };
+    }
+}

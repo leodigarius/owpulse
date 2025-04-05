@@ -449,13 +449,13 @@ export default function AdminDashboardPage() {
                                            <td className="px-6 py-4 whitespace-nowrap">2025-04-03</td>
                                            <td className="px-6 py-4">Manager A</td>
                                            <td className="px-6 py-4"><span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 border border-blue-400">Message Sent</span></td>
-                                           <td className="px-6 py-4">Sent weekly summary to 'Operations' group.</td>
+                                           <td className="px-6 py-4">Sent weekly summary to &apos;Operations&apos; group.</td>
                                        </tr>
                                         <tr className="hover:bg-muted/50">
                                            <td className="px-6 py-4 whitespace-nowrap">2025-04-01</td>
                                            <td className="px-6 py-4">Manager B</td>
                                            <td className="px-6 py-4"><span className="bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300 border border-purple-400">Event Created</span></td>
-                                           <td className="px-6 py-4">Scheduled 'Team Lunch' for 'Sales' group.</td>
+                                           <td className="px-6 py-4">Scheduled &apos;Team Lunch&apos; for &apos;Sales&apos; group.</td>
                                        </tr>
                                        {/* Add more placeholder rows as needed */}
                                    </tbody>
@@ -465,8 +465,8 @@ export default function AdminDashboardPage() {
                        {/* Removed Products Overview Table */}
                     </>
                  )}
-                 {!isLoadingAnalytics && !error && !analytics && !fetchError && <p className="text-sm text-muted-foreground">No analytics data available for this selection.</p>}
-             </div>
+                {!isLoadingAnalytics && !error && !analytics && !fetchError && <p className="text-sm text-muted-foreground">No analytics data available for this selection.</p>}
+            </div>
           </section>
 
           {/* Other Admin Features Card - Apply glass effect */}

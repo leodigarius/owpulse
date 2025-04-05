@@ -2,7 +2,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getServerSession } from "next-auth/next";
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'; // Adjust path
+import { authOptions } from '@/lib/auth'; // Updated import path
 
 // Helper to check for Manager role and get their assigned focus group ID
 async function getManagerFocusGroupId(request: NextRequest): Promise<string | null | undefined> {

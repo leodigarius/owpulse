@@ -80,7 +80,7 @@ export default function Step2_Positives({ data, setData, onNext, onBack }: Step2
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-semibold text-center text-gray-700">
-        That's great! What went well?
+        That&apos;s great! What went well?
       </h2>
       <p className="text-center text-gray-500 text-sm">(Select all that apply)</p>
 

@@ -121,7 +121,7 @@ export default function Step3_Negatives({ data, setData, onNext, onBack }: Step3
             className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
           />
           <label htmlFor="didNotWork" className="ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
-            I didn't work this past week
+            I didn&apos;t work this past week
           </label>
         </div>
         <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">

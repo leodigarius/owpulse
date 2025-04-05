@@ -2,10 +2,10 @@
 import { NextResponse, NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getServerSession } from "next-auth/next";
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'; // Adjust path
+import { authOptions } from '@/lib/auth'; // Updated import path
 
 // Helper to check for Admin role
-async function isAdminRequest(request: NextRequest): Promise<boolean> {
+async function isAdminRequest(_request: NextRequest): Promise<boolean> {
   const session = await getServerSession(authOptions);
   return !!session?.user && session.user.role === 'ADMIN';
 }
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 
   try {
     // Build the where clause for filtering
-    const whereClause: any = {};
+    const whereClause: Record<string, unknown> = {};
     if (focusGroupId && typeof focusGroupId === 'string') {
       whereClause.focusGroupId = focusGroupId;
     }
@@ -147,8 +147,9 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ analytics: analyticsData }, { status: 200, headers: headers });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error('Error fetching admin analytics data:', error);
-    return NextResponse.json({ message: 'Internal Server Error', error: error.message }, { status: 500 });
+    return NextResponse.json({ message: 'Internal Server Error', error: errorMessage }, { status: 500 });
   }
 }
