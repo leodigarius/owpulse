@@ -1,7 +1,7 @@
 'use client';
 
-// Simple dynamic export that works with Next.js on Vercel
-export const dynamic = 'force-dynamic';
+// Page is now statically generated
+// export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect } from 'react';
 import Step1_Mood from '@/components/checkin/Step1_Mood';

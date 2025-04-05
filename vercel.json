@@ -11,45 +11,36 @@
     }
   },
   "routes": [
+    { 
+      "src": "/checkin/?",
+      "dest": "/checkin/index.html" 
+    },
+    { 
+      "src": "/admin/?",
+      "dest": "/admin/index.html" 
+    },
+    { 
+      "src": "/manager/?",
+      "dest": "/manager/index.html" 
+    },
+    { 
+      "src": "/dashboard/?",
+      "dest": "/dashboard/index.html" 
+    },
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    { 
-      "src": "/checkin",
-      "dest": "/checkin/" 
-    },
-    { 
-      "src": "/checkin/",
-      "dest": "/checkin/" 
-    },
-    { 
-      "src": "/admin",
-      "dest": "/admin/" 
-    },
-    { 
-      "src": "/admin/",
-      "dest": "/admin/" 
-    },
-    { 
-      "src": "/manager",
-      "dest": "/manager/" 
-    },
-    { 
-      "src": "/manager/",
-      "dest": "/manager/" 
-    },
-    { 
-      "src": "/dashboard",
-      "dest": "/dashboard/" 
-    },
-    { 
-      "src": "/dashboard/",
-      "dest": "/dashboard/" 
+      "src": "^/((?!_next|static|api|.*\\.(?:jpg|jpeg|gif|png|svg|ico)).*)",
+      "dest": "/index.html"
     },
     {
       "src": "/(.*)",
       "dest": "/$1"
     }
+  ],
+  "rewrites": [
+    { "source": "/checkin", "destination": "/checkin/index.html" },
+    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/manager", "destination": "/manager/index.html" },
+    { "source": "/dashboard", "destination": "/dashboard/index.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 } 

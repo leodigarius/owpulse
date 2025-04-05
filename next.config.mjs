@@ -6,8 +6,8 @@ const nextConfig = {
     domains: ['vercel.com'],
     unoptimized: true,
   },
-  // Use standalone mode for API support
-  output: 'standalone',
+  // Use export mode for full static generation
+  output: 'export',
   // Trailing slashes handled by Vercel config
   trailingSlash: true,
   // Skip type checking during build
