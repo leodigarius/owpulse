@@ -4,11 +4,14 @@
   "installCommand": "npm install",
   "framework": "nextjs",
   "regions": ["iad1"],
+  "functions": {
+    "api/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
   "routes": [
-    { "src": "^/checkin/?$", "dest": "/checkin/index.html" },
-    { "src": "^/admin/?$", "dest": "/admin/index.html" },
-    { "src": "^/manager/?$", "dest": "/manager/index.html" },
-    { "src": "^/dashboard/?$", "dest": "/dashboard/index.html" },
-    { "src": "^/(?!_next|static).*$", "dest": "/index.html" }
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/$1" }
   ]
 } 

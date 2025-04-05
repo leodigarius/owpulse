@@ -6,8 +6,8 @@ const nextConfig = {
     domains: ['vercel.com'],
     unoptimized: true,
   },
-  // Use export mode for full static generation
-  output: 'export',
+  // Use standalone mode for API route support
+  output: 'standalone',
   // Trailing slashes handled by Vercel config
   trailingSlash: true,
   // Skip type checking during build
@@ -24,9 +24,9 @@ const nextConfig = {
   compress: false,
   // Experimental features
   experimental: {
-    // Disable client references manifest
-    disableOptimizedLoading: true,
-    // Enable more component exports for static generation
+    // Keep optimized loading for better performance
+    // disableOptimizedLoading: false,
+    // Enable CSS optimization
     optimizeCss: true
   }
 };
