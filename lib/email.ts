@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
 
 // Ensure API key and From address are set in environment variables
-const RESEND_API_KEY = process.env.re_5Juu8wjz_DBgqFFbNmk6CbzMKSZy3kaSn; 
+const RESEND_API_KEY = process.env.EMAIL_API_KEY; 
 const EMAIL_FROM = process.env.EMAIL_FROM_ADDRESS;
 
 if (!RESEND_API_KEY) {
